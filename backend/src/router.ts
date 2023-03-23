@@ -1,6 +1,8 @@
 import Fastify from "fastify";
 
-const routes = Fastify();
+const routes = Fastify({
+  logger: true,
+});
 
 routes.get("/", async (req, res) => {
   return { hello: "world!" };

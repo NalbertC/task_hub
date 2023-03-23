@@ -4,7 +4,9 @@ import Fastify from "fastify";
 import TarefasController from "./controllers/TarefasController";
 dotenv.config();
 
-const server = Fastify();
+const server = Fastify({
+  logger: true,
+});
 
 //---- middleware---------------
 server.register(cors);
