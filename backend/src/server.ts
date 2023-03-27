@@ -1,7 +1,8 @@
 import cors from "@fastify/cors";
 import dotenv from "dotenv";
 import Fastify from "fastify";
-import TarefasController from "./controllers/TarefasController";
+import { serverRoutes } from "./router";
+
 dotenv.config();
 
 const server = Fastify({
@@ -10,11 +11,13 @@ const server = Fastify({
 
 //---- middleware---------------
 server.register(cors);
+server.register(serverRoutes);
 
 // -----------------------------
 
-server.get("/tarefas", TarefasController.index);
-
+server.get("/", () => {
+  return { hello: "world!" };
+});
 //------------------------------
 server
   .listen({
@@ -22,6 +25,6 @@ server
   })
   .then(() => {
     console.log(
-      `Server run in ${process.env.API_HOST}:${process.env.API_PORT}`
+      `Server running in ${process.env.API_HOST}:${process.env.API_PORT}`
     );
   });

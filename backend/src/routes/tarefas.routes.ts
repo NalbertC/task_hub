@@ -1,8 +1,9 @@
-import Fastify from "fastify";
+import { FastifyInstance } from "fastify";
+
 import TarefasController from "../controllers/TarefasController";
 
-const routesTarefas = Fastify();
-
-routesTarefas.get("/", TarefasController.index);
-
-export { routesTarefas };
+export async function tarefasRoutes(routes: FastifyInstance) {
+  routes.get("/tarefas", TarefasController.index);
+  routes.post("/tarefas", TarefasController.create);
+  routes.patch("/tarefas/:id/toggle", TarefasController.toggle);
+}

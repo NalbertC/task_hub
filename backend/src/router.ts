@@ -1,11 +1,8 @@
-import Fastify from "fastify";
+import { FastifyInstance } from "fastify";
+import { diaRoutes } from "./routes/dia.routes";
+import { tarefasRoutes } from "./routes/tarefas.routes";
 
-const routes = Fastify({
-  logger: true,
-});
-
-routes.get("/", async (req, res) => {
-  return { hello: "world!" };
-});
-
-export { routes };
+export async function serverRoutes(routes: FastifyInstance) {
+  routes.register(tarefasRoutes);
+  routes.register(diaRoutes);
+}

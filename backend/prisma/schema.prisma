@@ -5,17 +5,69 @@ generator client {
   provider = "prisma-client-js"
 }
 
+generator erd {
+  provider = "prisma-erd-generator"
+  output   = "./ERD.svg"
+  theme    = "dark"
+}
+
 datasource db {
-  provider = "mysql"
+  provider = "sqlite"
   url      = env("DATABASE_URL")
 }
 
 model Tarefa {
-  id    Int    @id @default(autoincrement())
-  title String
+  id      Int      @id @default(autoincrement())
+  titulo  String
+  momento DateTime
 
-  created_at DateTime @default(now())
-  updated_at DateTime @default(now()) @updatedAt
+  DiaTarefa DiaTarefa[]
+
+  criado_em   DateTime          @default(now())
+  atualido_em DateTime          @default(now()) @updatedAt
+  DiaSemana   TarefaDiaSemana[]
 
   @@map("tarefa")
+}
+
+model Dia {
+  id        Int         @id @default(autoincrement())
+  data      DateTime
+  DiaTarefa DiaTarefa[]
+
+  criado_em   DateTime @default(now())
+  atualido_em DateTime @default(now()) @updatedAt
+
+  @@unique([data])
+  @@map("dia")
+}
+
+model DiaTarefa {
+  id Int @id @default(autoincrement())
+
+  dia_id    Int
+  tarefa_id Int
+
+  dia    Dia    @relation(fields: [dia_id], references: [id])
+  tarefa Tarefa @relation(fields: [tarefa_id], references: [id])
+
+  criado_em   DateTime @default(now())
+  atualido_em DateTime @default(now()) @updatedAt
+
+  @@unique([dia_id, tarefa_id])
+  @@map("dia_tarefa")
+}
+
+model TarefaDiaSemana {
+  id         Int @id @default(autoincrement())
+  tarefa_id  Int
+  dia_semana Int
+
+  tarefa Tarefa @relation(fields: [tarefa_id], references: [id])
+
+  criado_em   DateTime @default(now())
+  atualido_em DateTime @default(now()) @updatedAt
+
+  @@unique([tarefa_id, dia_semana])
+  @@map("tarefa_dia_semana")
 }
