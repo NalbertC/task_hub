@@ -1,6 +1,6 @@
-import { WebRoutes } from "./routes/router";
-import "./services/dayjs";
+import { WebRoutes } from "./routes/Routes";
 import "./styles/tailwind.css";
+
 function App() {
   return <WebRoutes />;
 }

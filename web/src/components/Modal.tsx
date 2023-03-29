@@ -1,14 +1,23 @@
 import * as Dialog from "@radix-ui/react-dialog";
+import clsx from "clsx";
+import { ReactNode } from "react";
 import { BsXCircle } from "react-icons/bs";
 import { MdPlaylistAdd } from "react-icons/md";
-import { NewTodo } from "./NewTodo";
 
-export function Modal() {
+interface ModalProps {
+  children: ReactNode;
+  className: string;
+}
+
+export function Modal(props: ModalProps) {
   return (
     <Dialog.Root>
       <Dialog.Trigger
         type="button"
-        className="bg-blue-700 text-gray-200 rounded-lg font-semibold px-6 h-12 flex items-center gap-3 hover:bg-blue-800 focus:shadow-0 focus:outline-0 transition-colors"
+        className={clsx(
+          "bg-blue-700 text-gray-200 rounded-lg font-semibold px-6 h-12 flex items-center gap-3 hover:bg-blue-800 focus:shadow-0 focus:outline-0 transition-colors",
+          props.className
+        )}
       >
         <MdPlaylistAdd size={24} />
         Nova Tarefa
@@ -26,7 +35,7 @@ export function Modal() {
             Criar tarefa
           </Dialog.Title>
 
-          <NewTodo />
+          {props.children}
         </Dialog.Content>
       </Dialog.Portal>
     </Dialog.Root>

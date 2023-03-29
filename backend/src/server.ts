@@ -1,30 +1,28 @@
-import cors from "@fastify/cors";
+import cors from "cors";
 import dotenv from "dotenv";
-import Fastify from "fastify";
+import express from "express";
+import morgan from "morgan";
 import { serverRoutes } from "./router";
 
 dotenv.config();
 
-const server = Fastify({
-  logger: true,
-});
+const server = express();
 
 //---- middleware---------------
-server.register(cors);
-server.register(serverRoutes);
+server.use(express.urlencoded({ extended: true }));
+server.use(express.json());
+server.use(cors());
+server.use(morgan("dev"));
+server.use(serverRoutes);
 
 // -----------------------------
 
-server.get("/", () => {
-  return { hello: "world!" };
+server.get("/", (req, res) => {
+  return res.json({ hello: "world!" });
 });
 //------------------------------
-server
-  .listen({
-    port: Number(process.env.API_PORT),
-  })
-  .then(() => {
-    console.log(
-      `Server running in ${process.env.API_HOST}:${process.env.API_PORT}`
-    );
-  });
+server.listen(process.env.API_PORT, () => {
+  console.log(
+    `Server running in ${process.env.API_HOST}:${process.env.API_PORT}`
+  );
+});

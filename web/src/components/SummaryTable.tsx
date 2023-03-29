@@ -1,6 +1,7 @@
 // import * as ScrollArea from "@radix-ui/react-scroll-area";
 import dayjs from "dayjs";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { AuthContext } from "../contexts/auth";
 import { api } from "../services/api";
 import { generateDatesFromYearBeginnig } from "../utils/generate-dates-from-year-beginnig";
 import { TodoDay } from "./TodoDay";
@@ -19,12 +20,18 @@ type Summary = Array<{
 }>;
 
 export function SummaryTable() {
+  const { logout, authenticated, user, token } = useContext(AuthContext);
   const [summary, setSumary] = useState<Summary>([]);
 
   useEffect(() => {
     (async () => {
       try {
-        const response = await api.get("/summary");
+        const response = await api.get(`/usuario/${user.id}/dia/summary`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
+
         setSumary(response.data);
       } catch (error) {
         console.log(error);

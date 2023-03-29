@@ -9,3 +9,7 @@
 `ya dayjs`
 
 `yarn add -D prisma-erd-generator @mermaid-js/mermaid-cli`
+
+`ya bcryptjs`
+
+`ya jsonwebtoken`

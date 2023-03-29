@@ -1,8 +1,19 @@
-import { FastifyInstance } from "fastify";
+import { Router } from "express";
+import { ensureAutenticado } from "./middleware/auth";
 import { diaRoutes } from "./routes/dia.routes";
+import { sessionRoutes } from "./routes/session.routes";
 import { tarefasRoutes } from "./routes/tarefas.routes";
+import { usuarioRoutes } from "./routes/usuario.routes";
 
-export async function serverRoutes(routes: FastifyInstance) {
-  routes.register(tarefasRoutes);
-  routes.register(diaRoutes);
-}
+const serverRoutes = Router();
+
+// login
+serverRoutes.use("/session", sessionRoutes);
+
+serverRoutes.use("/usuario", usuarioRoutes);
+
+serverRoutes.use(ensureAutenticado);
+serverRoutes.use("/tarefas", tarefasRoutes);
+serverRoutes.use("/dia", diaRoutes);
+
+export { serverRoutes };

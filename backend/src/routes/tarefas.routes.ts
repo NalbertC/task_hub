@@ -1,9 +1,9 @@
-import { FastifyInstance } from "fastify";
-
+import { Router } from "express";
 import TarefasController from "../controllers/TarefasController";
 
-export async function tarefasRoutes(routes: FastifyInstance) {
-  routes.get("/tarefas", TarefasController.index);
-  routes.post("/tarefas", TarefasController.create);
-  routes.patch("/tarefas/:id/toggle", TarefasController.toggle);
-}
+const tarefasRoutes = Router();
+
+tarefasRoutes.get("/usuario/:id", TarefasController.index);
+tarefasRoutes.post("/usuario/:id", TarefasController.create);
+tarefasRoutes.patch("/:idT/usuario/:idU/toggle", TarefasController.toggle);
+export { tarefasRoutes };

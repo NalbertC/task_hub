@@ -16,6 +16,24 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Usuario {
+  id    Int    @id @default(autoincrement())
+  nome  String
+  email String
+  senha String
+
+  tarefa Tarefa[]
+  perfil Perfil?
+
+  criado_em       DateTime          @default(now())
+  atualizado_em   DateTime          @default(now()) @updatedAt
+  DiaTarefa       DiaTarefa[]
+  TarefaDiaSemana TarefaDiaSemana[]
+
+  @@unique([email])
+  @@map("usuario")
+}
+
 model Tarefa {
   id      Int      @id @default(autoincrement())
   titulo  String
@@ -23,11 +41,28 @@ model Tarefa {
 
   DiaTarefa DiaTarefa[]
 
-  criado_em   DateTime          @default(now())
-  atualido_em DateTime          @default(now()) @updatedAt
-  DiaSemana   TarefaDiaSemana[]
+  DiaSemana TarefaDiaSemana[]
+  User      Usuario?          @relation(fields: [userId], references: [id])
+  userId    Int
+
+  criado_em   DateTime @default(now())
+  atualido_em DateTime @default(now()) @updatedAt
 
   @@map("tarefa")
+}
+
+model Perfil {
+  id   Int     @id @default(autoincrement())
+  nome String?
+  key  String?
+  url  String?
+
+  userAvatar    Usuario  @relation(fields: [userId], references: [id])
+  userId        Int      @unique
+  criado_em     DateTime @default(now())
+  atualizado_em DateTime @default(now()) @updatedAt
+
+  @@map("perfil")
 }
 
 model Dia {
@@ -45,11 +80,13 @@ model Dia {
 model DiaTarefa {
   id Int @id @default(autoincrement())
 
-  dia_id    Int
-  tarefa_id Int
+  dia_id     Int
+  tarefa_id  Int
+  usuario_id Int
 
-  dia    Dia    @relation(fields: [dia_id], references: [id])
-  tarefa Tarefa @relation(fields: [tarefa_id], references: [id])
+  dia     Dia     @relation(fields: [dia_id], references: [id])
+  tarefa  Tarefa  @relation(fields: [tarefa_id], references: [id])
+  usuario Usuario @relation(fields: [usuario_id], references: [id])
 
   criado_em   DateTime @default(now())
   atualido_em DateTime @default(now()) @updatedAt
@@ -62,8 +99,10 @@ model TarefaDiaSemana {
   id         Int @id @default(autoincrement())
   tarefa_id  Int
   dia_semana Int
+  usuario_id Int
 
-  tarefa Tarefa @relation(fields: [tarefa_id], references: [id])
+  tarefa  Tarefa  @relation(fields: [tarefa_id], references: [id])
+  usuario Usuario @relation(fields: [usuario_id], references: [id])
 
   criado_em   DateTime @default(now())
   atualido_em DateTime @default(now()) @updatedAt

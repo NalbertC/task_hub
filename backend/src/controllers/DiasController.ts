@@ -1,11 +1,27 @@
 import dayjs from "dayjs";
-import { FastifyRequest } from "fastify";
+import { Request, Response } from "express";
 import { z } from "zod";
 import { prisma } from "../database";
 
 export default {
-  async index(req: FastifyRequest) {
+  async index(req: Request, res: Response) {
     try {
+      const viewTarefas = z.object({
+        id: z.string(),
+      });
+
+      const { id } = viewTarefas.parse(req.params);
+
+      const usuario = await prisma.usuario.findUnique({
+        where: {
+          id: Number(id),
+        },
+      });
+
+      if (!usuario) {
+        return res.json("Usuário não encontrado");
+      }
+
       const getDiaParams = z.object({
         data: z.coerce.date(),
       });
@@ -25,6 +41,7 @@ export default {
               dia_semana: diaSemana,
             },
           },
+          userId: usuario.id,
         },
       });
 
@@ -33,7 +50,13 @@ export default {
           data: parsedData.toDate(),
         },
         include: {
-          DiaTarefa: true,
+          DiaTarefa: {
+            where: {
+              tarefa: {
+                userId: Number(usuario.id),
+              },
+            },
+          },
         },
       });
 
@@ -42,18 +65,34 @@ export default {
           return diaTarefa.tarefa_id;
         }) ?? [];
 
-      return {
+      return res.json({
         possiveisTarefas,
         completedTarefas,
-      };
+      });
     } catch (error) {
       console.error(error);
-      return "Erro no servidor interno!";
+      return res.json("Erro no servidor interno!");
     }
   },
 
-  async summary() {
+  async summary(req: Request, res: Response) {
     try {
+      const viewTarefas = z.object({
+        id: z.string(),
+      });
+
+      const { id } = viewTarefas.parse(req.params);
+
+      const usuario = await prisma.usuario.findUnique({
+        where: {
+          id: Number(id),
+        },
+      });
+
+      if (!usuario) {
+        return res.json("Usuário não encontrado");
+      }
+
       const summary = await prisma.$queryRaw`
       SELECT
         D.id,
@@ -61,22 +100,21 @@ export default {
           SELECT
             cast(count(*) as float)
           FROM dia_tarefa DT
-          WHERE DT.dia_id = D.id
+          WHERE DT.dia_id = D.id AND DT.usuario_id = ${usuario.id}
         ) as completed,
         (
           SELECT
             cast(count(*) as float)
           FROM tarefa_dia_semana TDS
           WHERE
-            TDS.dia_semana = cast(strftime("%w", D.data/1000.0, 'unixepoch') as int)
+            TDS.dia_semana = cast(strftime("%w", D.data/1000.0, 'unixepoch') as int) AND TDS.usuario_id = ${usuario.id}
         ) as amount
-      FROM dia D
-      `;
+      FROM dia D`;
 
-      return summary;
+      return res.json(summary);
     } catch (error) {
       console.error(error);
-      return "Erro no servidor interno!";
+      return res.json("Erro no servidor interno!");
     }
   },
 };

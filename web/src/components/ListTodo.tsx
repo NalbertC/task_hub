@@ -1,5 +1,6 @@
 import dayjs from "dayjs";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { AuthContext } from "../contexts/auth";
 import { api } from "../services/api";
 import { ViewCheckbox } from "./Checkbox";
 
@@ -20,15 +21,17 @@ interface TodoInfo {
 }
 
 export function ListTodo({ date, onCompletedChanded }: ListTodoProps) {
+  const { logout, authenticated, user, token } = useContext(AuthContext);
   const [todoInfo, setTodoInfo] = useState<TodoInfo>();
-
-  console.log(date.toISOString());
 
   const [] = useState();
   useEffect(() => {
     (async () => {
       try {
-        const response = await api.get("/dia", {
+        const response = await api.get(`/dia/usuario/${user.id}`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
           params: {
             data: date.toISOString(),
           },
@@ -44,7 +47,11 @@ export function ListTodo({ date, onCompletedChanded }: ListTodoProps) {
   const isDateInPast = dayjs(date).endOf("day").isBefore(new Date());
 
   async function handleToggleTodo(todoId: number) {
-    await api.patch(`/tarefas/${todoId}/toggle`);
+    await api.patch(`/tarefas/${todoId}/usuario/${user.id}/toggle`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
 
     const isTodoAlreadyCompleted = todoInfo?.completedTarefas.includes(todoId);
 

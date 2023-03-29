@@ -45,7 +45,7 @@ export function TodoDay({
       />
 
       <Popover.Portal>
-        <Popover.Content className="min-w-[320px] p-4 rounded-2xl bg-blue-100 flex flex-col border-blue-400 border-[2px] focus:shadow-0 focus:outline-0">
+        <Popover.Content className="min-w-[240px] p-4 rounded-2xl bg-blue-100 flex flex-col border-blue-400 border-[2px] focus:shadow-0 focus:outline-0">
           <Text>{dayOfWeek}</Text>
           <Heading>{dayAndMonth}</Heading>
 
