@@ -47,11 +47,19 @@ export function ListTodo({ date, onCompletedChanded }: ListTodoProps) {
   const isDateInPast = dayjs(date).endOf("day").isBefore(new Date());
 
   async function handleToggleTodo(todoId: number) {
-    await api.patch(`/tarefas/${todoId}/usuario/${user.id}/toggle`, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
+    api.interceptors.request.use(
+      function (config) {
+        const token = localStorage.getItem("token");
+        if (token) config.headers.Authorization = `Bearer ${token}`;
+        return config;
       },
-    });
+      function (error) {
+        return Promise.reject(error);
+      }
+    );
+    const response = await api.patch(
+      `/tarefas/${todoId}/usuario/${user.id}/toggle`
+    );
 
     const isTodoAlreadyCompleted = todoInfo?.completedTarefas.includes(todoId);
 

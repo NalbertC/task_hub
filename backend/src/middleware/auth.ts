@@ -24,6 +24,6 @@ export function ensureAutenticado(
     return next();
   } catch (error) {
     console.error(error);
-    return res.json("Token inválido");
+    return res.status(400).json("Token inválido");
   }
 }

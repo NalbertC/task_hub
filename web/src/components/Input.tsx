@@ -4,10 +4,12 @@ import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   icon: ReactNode;
-  inputUse?: "text" | "password";
+  inputUse?: "text" | "password" | "search";
   value?: string | undefined;
   id?: string;
   className?: string;
+  children?: ReactNode;
+  buscar?: any;
 }
 
 export function Input({
@@ -15,6 +17,7 @@ export function Input({
   inputUse = "text",
   icon,
   className,
+  children,
   ...props
 }: InputProps) {
   const [typ, setType] = useState(type);
@@ -33,9 +36,7 @@ export function Input({
         {icon}
       </span>
 
-      {inputUse === "text" ? (
-        <></>
-      ) : (
+      {inputUse === "password" ? (
         <span
           className="flex justify-center items-center absolute  bottom-0 right-0 h-full pr-4 text-blue-400 cursor-pointer"
           onClick={() => {
@@ -49,6 +50,8 @@ export function Input({
         >
           {icone}
         </span>
+      ) : (
+        <></>
       )}
     </div>
   );

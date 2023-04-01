@@ -27,7 +27,6 @@ export function Login() {
         <div className="absolute px-6 pt-4 pb-6 bg-background rounded-2xl w-full max-w-md top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 focus:shadow-0 focus:outline-0 flex flex-col justify-center items-center">
           <div className="flex flex-col items-center my-6 ">
             <Logo /> <Heading>ToDoHub</Heading>
-            {String(authenticated)}
           </div>
           <form onSubmit={handleSubmit} className="w-full flex flex-col gap-4">
             <label htmlFor="email" className="flex flex-col gap-3 pt-2">

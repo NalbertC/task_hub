@@ -21,13 +21,13 @@ export default {
       });
 
       if (!usuario) {
-        return res.json("Usuário não encontrado");
+        return res.status(404).json("Usuário não encontrado");
       }
 
       const check = await checarSenha(senha, usuario.senha);
 
       if (!check) {
-        return res.json("Senha inválida");
+        return res.status(401).json("Senha inválida");
       }
 
       const { id } = usuario;

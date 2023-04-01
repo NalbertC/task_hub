@@ -1,9 +1,8 @@
 import { BsSearch } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
-import { Button } from "./Button";
-import { Input } from "./Input";
 import { Logo } from "./Logo";
-import { Text } from "./Text";
+import { Modal } from "./Modal";
+import { InputSearch } from "./Search";
 
 export function Header() {
   const navigate = useNavigate();
@@ -13,22 +12,21 @@ export function Header() {
 
   return (
     <div className="bg-background h-[72px] w-full flex justify-between  items-center px-6 rounded-t-[inherit]">
-      <Logo />
+      <div className="flex flex-row items-center justify-between gap-2 ">
+        <Logo />
 
-      <div className="pl-4 flex flex-row justify-between items-center h-full gap-2">
-        <Input
-          placeholder="Buscar ..."
+        <InputSearch
           icon={<BsSearch />}
+          placeholder="Buscar ..."
           onKeyUp={(e) => {
             handleSearch(e);
           }}
         />
+      </div>
 
-        <Text className="h-10 flex items-center  text-gray-50 font-semibold px-3 rounded-[12px] hover:text-gray-400 cursor-pointer">
-          Entrar
-        </Text>
+      <div className="pl-4 flex flex-row justify-between items-center h-full gap-2">
         <div>
-          <Button onClick={() => navigate("/login")}>Criar conta</Button>
+          <Modal />
         </div>
       </div>
     </div>

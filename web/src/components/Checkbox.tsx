@@ -1,7 +1,7 @@
 import * as Checkbox from "@radix-ui/react-checkbox";
 import clsx from "clsx";
 import { ReactNode } from "react";
-import { BsCheck } from "react-icons/bs";
+import { BsCheckLg } from "react-icons/bs";
 import { Text } from "./Text";
 
 interface CheckboxProps {
@@ -27,9 +27,9 @@ export function ViewCheckbox({
         checked={checked}
         disabled={disabled}
       >
-        <div className="h-6 w-6 rounded-[6px] flex items-center justify-center border-2 border-blue-800 group-data-[state=checked]:bg-green-500 transition-colors">
+        <div className="h-6 w-6 rounded-[6px] flex items-center justify-center border-2 border-gray-500 group-data-[state=checked]:bg-green-500 group-data-[state=checked]:border-gray-500 group-data-[state=checked]:border  transition-colors">
           <Checkbox.Indicator className="h-full w-full flex items-center justify-center rounded-[inherit]">
-            <BsCheck size={24} className="text-gray-50" />
+            <BsCheckLg size={20} className="text-gray-50" />
           </Checkbox.Indicator>
         </div>
 

@@ -19,7 +19,7 @@ export default {
       });
 
       if (!usuario) {
-        return res.json("Usuário não encontrado");
+        return res.status(404).json("Usuário não encontrado");
       }
 
       const tarefas = await prisma.tarefa.findMany({
@@ -30,7 +30,7 @@ export default {
       return res.json(tarefas);
     } catch (error) {
       console.error(error);
-      return res.json("Erro no servidor interno!");
+      return res.status(500).json("Erro no servidor interno!");
     }
   },
   async create(req: Request, res: Response) {
@@ -55,7 +55,7 @@ export default {
       });
 
       if (!usuario) {
-        return res.json("Usuário não encontrado");
+        return res.status(404).json("Usuário não encontrado");
       }
 
       const day = dayjs().startOf("day").toDate();
@@ -75,10 +75,10 @@ export default {
           userId: usuario.id,
         },
       });
-      return res.json("Criado com sucesso!");
+      return res.status(201).json("Criado com sucesso!");
     } catch (error) {
       console.error(error);
-      return res.json("Erro no servidor interno!");
+      return res.status(500).json("Erro no servidor interno!");
     }
   },
   async toggle(req: Request, res: Response) {
@@ -97,7 +97,7 @@ export default {
       });
 
       if (!usuario) {
-        return res.json("Usuário não encontrado");
+        return res.status(404).json("Usuário não encontrado");
       }
 
       const today = dayjs().startOf("day").toDate();
@@ -131,7 +131,7 @@ export default {
             id: diaTarefa.id,
           },
         });
-        return res.json("Desmarcado");
+        return res.status(200).json("Desmarcado");
       } else {
         await prisma.diaTarefa.create({
           data: {
@@ -140,11 +140,11 @@ export default {
             usuario_id: Number(idU),
           },
         });
-        return res.json("Marcado");
+        return res.status(200).json("Marcado");
       }
     } catch (error) {
       console.error(error);
-      return res.json("Erro no servidor interno!");
+      return res.status(500).json("Erro no servidor interno!");
     }
   },
 };

@@ -37,7 +37,6 @@ export const AuthProvider = (props: any) => {
 
     localStorage.setItem("user", JSON.stringify(loggedUser));
     localStorage.setItem("token", token);
-    api.defaults.headers.Authorization = `Bearer ${token}`;
 
     setUser(loggedUser);
     navigate("/private");
@@ -47,9 +46,9 @@ export const AuthProvider = (props: any) => {
     console.log("logout");
     localStorage.removeItem("user");
     localStorage.removeItem("token");
-    api.defaults.headers.Authorization = null;
+    api.defaults.headers.authorization = null;
     setUser(null);
-    navigate("/login");
+    navigate("/");
   };
 
   return (

@@ -21,6 +21,10 @@ module.exports = {
       gridTemplateRows: {
         7: "repeat(7, minmax(0,1fr))",
       },
+      flex: {
+        2: "2 1 0",
+        3: "3 1 0",
+      },
     },
   },
   plugins: [],

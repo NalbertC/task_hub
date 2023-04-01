@@ -12,6 +12,7 @@ import { Home } from "../pages/Home";
 import { Login } from "../pages/Login";
 import { NotFound } from "../pages/NotFound";
 import { Privado } from "../pages/Privado";
+import { ViewUser } from "../pages/ViewUser";
 
 type User = {
   id: number;
@@ -45,6 +46,7 @@ export function WebRoutes() {
               </Private>
             }
           />
+          <Route path="/usuario/:idUsuario" element={<ViewUser />} />
           <Route path="/login" element={<Login />} />
           <Route path="/" element={<Home />} />
           <Route path="/*" element={<NotFound />} />

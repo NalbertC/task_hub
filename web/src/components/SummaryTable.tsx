@@ -19,25 +19,26 @@ type Summary = Array<{
   completed: number;
 }>;
 
-export function SummaryTable() {
+interface SummaryProps {
+  userId: string;
+  disabled?: boolean;
+}
+
+export function SummaryTable(props: SummaryProps) {
   const { logout, authenticated, user, token } = useContext(AuthContext);
   const [summary, setSumary] = useState<Summary>([]);
 
   useEffect(() => {
     (async () => {
       try {
-        const response = await api.get(`/usuario/${user.id}/dia/summary`, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        });
+        const response = await api.get(`/usuario/${props.userId}/dia/summary`);
 
         setSumary(response.data);
       } catch (error) {
         console.log(error);
       }
     })();
-  }, []);
+  }, [props.userId]);
 
   return (
     <div className="w-full overflow-hidden  flex">
@@ -63,6 +64,7 @@ export function SummaryTable() {
 
             return (
               <TodoDay
+                disabled={props.disabled}
                 key={date.toString()}
                 date={date}
                 amount={dayInSummary?.amount}
@@ -76,7 +78,7 @@ export function SummaryTable() {
             return (
               <div
                 key={i}
-                className="w-6 h-6 bg-gray-400  rounded-lg opacity-40 cursor-not-allowed"
+                className="w-6 h-6 bg-gray-800  rounded-lg opacity-40 cursor-not-allowed"
               />
             );
           })}

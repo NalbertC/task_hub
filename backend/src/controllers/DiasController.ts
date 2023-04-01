@@ -19,7 +19,7 @@ export default {
       });
 
       if (!usuario) {
-        return res.json("Usuário não encontrado");
+        return res.status(404).json("Usuário não encontrado");
       }
 
       const getDiaParams = z.object({
@@ -65,13 +65,13 @@ export default {
           return diaTarefa.tarefa_id;
         }) ?? [];
 
-      return res.json({
+      return res.status(200).json({
         possiveisTarefas,
         completedTarefas,
       });
     } catch (error) {
       console.error(error);
-      return res.json("Erro no servidor interno!");
+      return res.status(500).json("Erro no servidor interno!");
     }
   },
 
@@ -90,7 +90,7 @@ export default {
       });
 
       if (!usuario) {
-        return res.json("Usuário não encontrado");
+        return res.status(404).json("Usuário não encontrado");
       }
 
       const summary = await prisma.$queryRaw`
@@ -111,7 +111,7 @@ export default {
         ) as amount
       FROM dia D`;
 
-      return res.json(summary);
+      return res.status(200).json(summary);
     } catch (error) {
       console.error(error);
       return res.json("Erro no servidor interno!");

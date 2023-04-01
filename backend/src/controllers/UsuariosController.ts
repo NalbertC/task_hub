@@ -92,7 +92,7 @@ export default {
       });
 
       if (!usuario) {
-        return res.json("Usuário não encontrado");
+        return res.status(404).json("Usuário não encontrado");
       }
 
       return res.json(<TViewUsuario>{
@@ -103,7 +103,43 @@ export default {
       });
     } catch (error) {
       console.error(error);
-      return res.json("Erro no servidor interno!");
+      return res.status(500).json("Erro no servidor interno!");
+    }
+  },
+
+  async searchUsuarios(req: Request, res: Response) {
+    try {
+      const buscarUsuariosParams = z.object({
+        busca: z.string(),
+      });
+
+      const { busca } = buscarUsuariosParams.parse(req.query);
+
+      const usuarios = await prisma.usuario.findMany({
+        where: {
+          nome: {
+            startsWith: busca,
+          },
+        },
+      });
+
+      const viewUsuarios: TViewUsuario[] = [];
+
+      usuarios.map((usuario) => {
+        const user: TViewUsuario = {
+          id: usuario.id,
+          nome: usuario.nome,
+          email: usuario.email,
+          data_criacao: usuario.criado_em,
+        };
+
+        viewUsuarios.push(user);
+      });
+
+      return res.status(200).json(viewUsuarios);
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json("Erro no servidor interno!");
     }
   },
 };

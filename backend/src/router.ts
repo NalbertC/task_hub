@@ -12,8 +12,8 @@ serverRoutes.use("/session", sessionRoutes);
 
 serverRoutes.use("/usuario", usuarioRoutes);
 
-serverRoutes.use(ensureAutenticado);
-serverRoutes.use("/tarefas", tarefasRoutes);
-serverRoutes.use("/dia", diaRoutes);
+// serverRoutes.use(ensureAutenticado);
+serverRoutes.use("/tarefas", ensureAutenticado, tarefasRoutes);
+serverRoutes.use("/dia", ensureAutenticado, diaRoutes);
 
 export { serverRoutes };
