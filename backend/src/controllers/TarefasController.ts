@@ -33,6 +33,7 @@ export default {
       return res.status(500).json("Erro no servidor interno!");
     }
   },
+
   async create(req: Request, res: Response) {
     try {
       const criarTarefaBody = z.object({
@@ -40,13 +41,19 @@ export default {
         diaSemana: z.array(z.number().min(0).max(6)),
       });
 
-      const { titulo, diaSemana } = criarTarefaBody.parse(req.body);
-
       const criarTarefaParams = z.object({
         id: z.string(),
       });
 
+      const getDiaParams = z.object({
+        dataFim: z.coerce.date().optional(),
+      });
+
+      const { titulo, diaSemana } = criarTarefaBody.parse(req.body);
+
       const { id } = criarTarefaParams.parse(req.params);
+
+      const { dataFim } = getDiaParams.parse(req.query);
 
       const usuario = await prisma.usuario.findUnique({
         where: {
@@ -54,33 +61,46 @@ export default {
         },
       });
 
+      let fimTarefa: Date | null;
+
       if (!usuario) {
         return res.status(404).json("Usuário não encontrado");
       }
 
-      const day = dayjs().startOf("day").toDate();
+      if (!dataFim) {
+        fimTarefa = null;
+      } else {
+        const date = new Date(dataFim);
+        fimTarefa = dayjs(date).startOf("day").toDate();
+        console.log(fimTarefa);
+      }
 
-      await prisma.tarefa.create({
-        data: {
-          titulo,
-          momento: day,
-          DiaSemana: {
-            create: diaSemana.map((dia) => {
-              return {
-                dia_semana: dia,
-                usuario_id: usuario.id,
-              };
-            }),
-          },
-          userId: usuario.id,
-        },
-      });
+      const day = dayjs().startOf("day").toDate();
+      console.log(day);
+
+      // await prisma.tarefa.create({
+      //   data: {
+      //     titulo,
+      //     inicio: day,
+      //     fim: fimTarefa,
+      //     DiaSemana: {
+      //       create: diaSemana.map((dia) => {
+      //         return {
+      //           dia_semana: dia,
+      //           usuario_id: usuario.id,
+      //         };
+      //       }),
+      //     },
+      //     userId: usuario.id,
+      //   },
+      // });
       return res.status(201).json("Criado com sucesso!");
     } catch (error) {
       console.error(error);
       return res.status(500).json("Erro no servidor interno!");
     }
   },
+
   async toggle(req: Request, res: Response) {
     try {
       const toggleTarefas = z.object({

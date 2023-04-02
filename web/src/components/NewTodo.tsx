@@ -1,6 +1,10 @@
 import { FormEvent, useContext, useState } from "react";
 
-import { BsCheckLg } from "react-icons/bs";
+import {
+  BsCalendar2WeekFill,
+  BsCheckLg,
+  BsFillCalendar2EventFill,
+} from "react-icons/bs";
 import { RiCalendarTodoLine } from "react-icons/ri";
 import { AuthContext } from "../contexts/auth";
 import { api } from "../services/api";
@@ -22,6 +26,7 @@ const diasDaSemanaExtenso = [
 export function NewTodo() {
   const { user } = useContext(AuthContext);
   const [title, setTitle] = useState("");
+  const [dataFim, setDataFim] = useState("");
   const [diasSemana, setDiasSemana] = useState<number[]>([]);
 
   async function handleSubmit(e: FormEvent) {
@@ -41,11 +46,16 @@ export function NewTodo() {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
+        params: {
+          dataFim,
+        },
       }
     );
+    console.log(dataFim);
 
     setTitle("");
     setDiasSemana([]);
+    setDataFim("");
     alert("Tarefa adicionada à lista");
   }
 
@@ -78,6 +88,31 @@ export function NewTodo() {
             setTitle(event.target.value);
           }}
         />
+      </div>
+      <div className="flex flex-col">
+        <label htmlFor="" className="mt-3 font-bold mb-2">
+          <Text size="lg">Até quando?</Text>
+        </label>
+        <div className="group/item relative z-1 w-full mb-1">
+          <input
+            type="date"
+            className="h-10 w-full rounded-[12px] ring-1 pl-9 pr-4 bg-black focus:shadow-0 focus:outline-0 focus:ring-1 "
+            value={dataFim}
+            onChange={(e) => {
+              setDataFim(e.target.value);
+            }}
+          />
+          <span className="focus:text-blue-200 flex items-center absolute rounded-[24px] bottom-0 left-0 h-full pl-3 text-blue-800">
+            <BsCalendar2WeekFill />
+          </span>
+
+          <div className="absolute inset-y-0 right-0 flex items-center pr-4  pointer-events-none">
+            <BsFillCalendar2EventFill size={20} className="cursor-pointer" />
+          </div>
+        </div>
+        <Text size="sm" className="text-gray-500">
+          Deixe vazio para não definir um fim
+        </Text>
       </div>
       <div className="flex flex-col gap-1">
         <label htmlFor="" className="mt-3 font-bold">

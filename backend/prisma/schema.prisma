@@ -35,9 +35,10 @@ model Usuario {
 }
 
 model Tarefa {
-  id      Int      @id @default(autoincrement())
-  titulo  String
-  momento DateTime
+  id     Int       @id @default(autoincrement())
+  titulo String
+  inicio DateTime
+  fim    DateTime?
 
   DiaTarefa DiaTarefa[]
 
