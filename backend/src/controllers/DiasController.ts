@@ -31,11 +31,14 @@ export default {
 
       const diaSemana = parsedData.get("day");
 
+      const dataAtual = dayjs().startOf("day");
+
       const possiveisTarefas = await prisma.tarefa.findMany({
         where: {
-          momento: {
+          inicio: {
             lte: data,
           },
+          OR: [{ fim: null }, { fim: { gte: data } }],
           DiaSemana: {
             some: {
               dia_semana: diaSemana,
