@@ -8,6 +8,13 @@ type TViewUsuario = {
   nome: string;
   email: string;
   data_criacao: Date;
+  perfil?: TPerfilUsuario;
+};
+
+type TPerfilUsuario = {
+  nome?: string;
+  key?: string;
+  url?: string;
 };
 
 export default {
@@ -87,7 +94,7 @@ export default {
           id: Number(id),
         },
         include: {
-          tarefa: true,
+          perfil: true,
         },
       });
 
@@ -100,6 +107,11 @@ export default {
         nome: usuario.nome,
         email: usuario.email,
         data_criacao: usuario.criado_em,
+        perfil: {
+          key: usuario.perfil?.key,
+          url: usuario.perfil?.url,
+          nome: usuario.perfil?.nome,
+        }
       });
     } catch (error) {
       console.error(error);
@@ -120,6 +132,9 @@ export default {
           nome: {
             startsWith: busca,
           },
+        },
+        include: {
+          perfil: true,
         },
       });
 

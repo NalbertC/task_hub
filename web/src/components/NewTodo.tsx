@@ -1,5 +1,6 @@
 import { FormEvent, useContext, useState } from "react";
 
+import dayjs from "dayjs";
 import {
   BsCalendar2WeekFill,
   BsCheckLg,
@@ -26,13 +27,19 @@ const diasDaSemanaExtenso = [
 export function NewTodo() {
   const { user } = useContext(AuthContext);
   const [title, setTitle] = useState("");
+
   const [dataFim, setDataFim] = useState("");
   const [diasSemana, setDiasSemana] = useState<number[]>([]);
+
+  const dateIsToday = dayjs(dataFim).startOf("day").isBefore(new Date());
+  const dayWeekIsToday = dayjs(dataFim).day();
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
 
-    if (!title || diasSemana.length === 0) {
+    const isDateInPast = dayjs(dataFim).endOf("day").isBefore(new Date());
+
+    if (!title || diasSemana.length === 0 || isDateInPast) {
       return;
     }
 
@@ -124,7 +131,11 @@ export function NewTodo() {
             <ViewCheckbox
               onCheckedChange={() => hadleToggleWeekDay(i)}
               key={dia}
-              checked={diasSemana.includes(i)}
+              checked={
+                dateIsToday ? dayWeekIsToday === i : diasSemana.includes(i)
+              }
+              //
+              disabled={dateIsToday}
             >
               {dia}
             </ViewCheckbox>

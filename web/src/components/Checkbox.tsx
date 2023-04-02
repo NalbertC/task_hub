@@ -22,7 +22,7 @@ export function ViewCheckbox({
   return (
     <div className="mt-2 flex flex-col gap-2">
       <Checkbox.Root
-        className="group flex items-center gap-2  disabled:cursor-not-allowed"
+        className="group flex items-center gap-2  disabled:cursor-not-allowed disabled:text-gray-400"
         onCheckedChange={onCheckedChange}
         checked={checked}
         disabled={disabled}

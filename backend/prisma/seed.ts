@@ -7,7 +7,7 @@ const day = dayjs().startOf("day").toDate();
 
 async function main() {
   await prisma.tarefa.create({
-    data: {
+     data: {
       titulo: "Terminar essa aplicação",
       momento: day,
       DiaSemana: {

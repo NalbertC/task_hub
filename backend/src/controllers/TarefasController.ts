@@ -46,7 +46,8 @@ export default {
       });
 
       const getDiaParams = z.object({
-        dataFim: z.coerce.date().optional(),
+        // dataFim: z.coerce.date().optional(),
+        dataFim: z.string().optional(),
       });
 
       const { titulo, diaSemana } = criarTarefaBody.parse(req.body);
@@ -61,39 +62,39 @@ export default {
         },
       });
 
-      let fimTarefa: Date | null;
+      let fimTarefa: Date | null = null;
 
       if (!usuario) {
         return res.status(404).json("Usuário não encontrado");
       }
 
-      if (!dataFim) {
-        fimTarefa = null;
-      } else {
-        const date = new Date(dataFim);
-        fimTarefa = dayjs(date).startOf("day").toDate();
-        console.log(fimTarefa);
+      if (dayjs(dataFim).endOf("day").isBefore(new Date())) {
+        return res.status(304).json("Data de término no passado");
       }
 
-      const day = dayjs().startOf("day").toDate();
-      console.log(day);
+      fimTarefa = dayjs(dataFim + " 03:00:00")
+        .startOf("day")
+        .toDate();
 
-      // await prisma.tarefa.create({
-      //   data: {
-      //     titulo,
-      //     inicio: day,
-      //     fim: fimTarefa,
-      //     DiaSemana: {
-      //       create: diaSemana.map((dia) => {
-      //         return {
-      //           dia_semana: dia,
-      //           usuario_id: usuario.id,
-      //         };
-      //       }),
-      //     },
-      //     userId: usuario.id,
-      //   },
-      // });
+      const day = dayjs().startOf("day").toDate();
+
+      await prisma.tarefa.create({
+        data: {
+          titulo,
+          inicio: day,
+          fim: fimTarefa,
+          DiaSemana: {
+            create: diaSemana.map((dia) => {
+              return {
+                dia_semana: dia,
+                usuario_id: usuario.id,
+              };
+            }),
+          },
+          userId: usuario.id,
+        },
+      });
+
       return res.status(201).json("Criado com sucesso!");
     } catch (error) {
       console.error(error);

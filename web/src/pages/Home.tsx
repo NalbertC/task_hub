@@ -8,6 +8,7 @@ import { InputSearch } from "../components/Search";
 import { Text } from "../components/Text";
 
 export function Home() {
+
   const navigate = useNavigate();
 
   return (

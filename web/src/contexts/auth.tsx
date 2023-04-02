@@ -26,11 +26,8 @@ export const AuthProvider = (props: any) => {
   }, []);
 
   const login = async (email: string, password: string) => {
-    console.log("login auth", { email, password });
-
     const response = await createSession(email, password);
 
-    console.log(response.data);
     // criar session
     const loggedUser = response.data.usuario;
     const token = response.data.token;
@@ -39,16 +36,15 @@ export const AuthProvider = (props: any) => {
     localStorage.setItem("token", token);
 
     setUser(loggedUser);
-    navigate("/private");
+    navigate("/");
   };
 
   const logout = () => {
-    console.log("logout");
     localStorage.removeItem("user");
     localStorage.removeItem("token");
     api.defaults.headers.authorization = null;
     setUser(null);
-    navigate("/");
+    navigate("/inicio");
   };
 
   return (

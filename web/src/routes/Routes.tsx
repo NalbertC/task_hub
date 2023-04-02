@@ -1,8 +1,8 @@
 import { useContext } from "react";
 import {
-  BrowserRouter as Router,
   Navigate,
   Route,
+  BrowserRouter as Router,
   Routes,
 } from "react-router-dom";
 
@@ -39,7 +39,7 @@ export function WebRoutes() {
       <AuthProvider>
         <Routes>
           <Route
-            path="/private"
+            path="/"
             element={
               <Private>
                 <Privado />
@@ -48,7 +48,7 @@ export function WebRoutes() {
           />
           <Route path="/usuario/:idUsuario" element={<ViewUser />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/" element={<Home />} />
+          <Route path="/inicio" element={<Home />} />
           <Route path="/*" element={<NotFound />} />
         </Routes>
       </AuthProvider>
