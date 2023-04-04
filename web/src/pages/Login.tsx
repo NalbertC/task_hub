@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { FaEnvelope, FaLongArrowAltRight } from "react-icons/fa";
+import { FaEnvelope, FaLock, FaLongArrowAltRight } from "react-icons/fa";
 import { Button } from "../components/Button";
 import { Heading } from "../components/Heading";
 import { Input } from "../components/Input";
@@ -26,6 +26,9 @@ export function Login() {
         <div className="absolute px-6 pt-4 pb-6 bg-background rounded-2xl w-full max-w-md top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 focus:shadow-0 focus:outline-0 flex flex-col justify-center items-center">
           <div className="flex flex-col items-center my-6 ">
             <Logo /> <Heading>ToDoHub</Heading>
+            <Text className="font-bold text-gray-500">
+              Faça login na plataforma
+            </Text>
           </div>
           <form onSubmit={handleSubmit} className="w-full flex flex-col gap-4">
             <label htmlFor="email" className="flex flex-col gap-3 pt-2">
@@ -42,7 +45,7 @@ export function Login() {
             <label htmlFor="email" className="flex flex-col gap-3 ">
               <Text className="font-semibold">Sua senha</Text>
               <Input
-                icon={<FaEnvelope />}
+                icon={<FaLock />}
                 placeholder="**********"
                 inputUse="password"
                 type="password"
@@ -52,7 +55,7 @@ export function Login() {
               />
             </label>
             <div className="flex justify-center h-4 text-red-500">
-              <p></p>
+              <Text> </Text>
             </div>
 
             <Button className="h-12">Confirmar</Button>

@@ -58,6 +58,7 @@ export function SummaryTable(props: SummaryProps) {
       <div className="grid grid-rows-7 grid-flow-col gap-y-1 gap-x-1">
         {summary.length > 0 &&
           summaryDates.map((date) => {
+
             const dayInSummary = summary.find((day) => {
               return dayjs(date).isSame(day.data, "day");
             });

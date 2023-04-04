@@ -1,40 +1,64 @@
-import { BsSearch } from "react-icons/bs";
-import { useNavigate } from "react-router-dom";
-import { Button } from "../components/Button";
-import { Heading } from "../components/Heading";
-import { Logo } from "../components/Logo";
+import { useContext, useEffect, useState } from "react";
+import { Header } from "../components/Header";
 import { Page } from "../components/Page";
-import { InputSearch } from "../components/Search";
-import { Text } from "../components/Text";
+import { ViewScrollArea } from "../components/ScrollBar";
+import { SummaryTable } from "../components/SummaryTable";
+import { AuthContext } from "../contexts/auth";
+import { api } from "../services/api";
+
+export interface User {
+  id: number;
+  nome: string;
+  email: string;
+  data_criacao: Date;
+  perfil?: {
+    nome?: string;
+    key?: string;
+    url?: string;
+  };
+}
 
 export function Home() {
+  const { logout, user } = useContext(AuthContext);
 
-  const navigate = useNavigate();
+  const [usuario, setUsuario] = useState<User>();
+
+  useEffect(() => {
+    (async () => {
+      const usuario = await api.get(`/usuario/${user.id}`);
+
+      setUsuario(usuario.data);
+    })();
+  }, []);
 
   return (
     <Page>
-      <div className="bg-background h-[72px] w-full flex justify-between  items-center px-6 rounded-t-[inherit]">
-        <Logo />
+      <Header />
+      <div className=" flex md:flex-row items-start h-full w-full flex-col  rounded-b-[inherit] p-3">
 
-        <div className="pl-4 flex flex-row justify-between items-center h-full gap-2">
-          <div className="relative">
-            <InputSearch icon={<BsSearch />} placeholder="Buscar ..." />
-          </div>
 
-          <a href="/login">
-            <Text className="h-10 flex items-center  text-gray-50 font-semibold px-3 rounded-[12px] hover:text-gray-400 cursor-pointer">
-              Entrar
-            </Text>
-          </a>
 
-          <div>
-            <Button onClick={() => navigate("/login")}>Criar conta</Button>
-          </div>
-        </div>
-      </div>
-      <div>
-        <Heading>Tela inicial da aplicação</Heading>
-        <Text>Imagine várias coisas aqui</Text>
+
+
+        <section className=" flex justify-center items-center w-full">
+          <ViewScrollArea dimentions="w-[inherit]">
+            <SummaryTable userId={user.id} />
+          </ViewScrollArea>
+        </section>
+        <section className="flex-grow">
+          {usuario?.id} <br />
+          {usuario?.nome}
+          <br />
+          {usuario?.email}
+          <br />
+          {String(usuario?.data_criacao)}
+          <br />
+          {usuario?.perfil?.key}
+          <br />
+          {usuario?.perfil?.nome}
+          <br />
+          {usuario?.perfil?.url}
+        </section>
       </div>
     </Page>
   );

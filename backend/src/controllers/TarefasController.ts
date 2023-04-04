@@ -27,7 +27,7 @@ export default {
           userId: usuario.id,
         },
       });
-      return res.json(tarefas);
+      return res.status(200).json(tarefas);
     } catch (error) {
       console.error(error);
       return res.status(500).json("Erro no servidor interno!");

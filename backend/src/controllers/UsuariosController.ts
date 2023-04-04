@@ -35,7 +35,7 @@ export default {
         viewUsuarios.push(user);
       });
 
-      return res.json(viewUsuarios);
+      return res.status(200).json(viewUsuarios);
     } catch (error) {
       console.error(error);
       return res.json("Erro no servidor interno!");
@@ -71,7 +71,7 @@ export default {
           senha: senhaCriptografada,
         },
       });
-      return res.json({
+      return res .status(201).json({
         mensagem: "Cadastrado com sucesso",
         usuario: novoUsuario,
       });

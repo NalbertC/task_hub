@@ -55,7 +55,7 @@ export function TodoDay({
 
           <ProgressBar percentege={completedPercentage} />
           <div className="">
-            <ViewScrollArea>
+            <ViewScrollArea >
               <ListTodo
                 date={date}
                 onCompletedChanded={handleCompletedChanged}

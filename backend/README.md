@@ -14,7 +14,8 @@
 
 `ya jsonwebtoken`
 
-
 `ya @aws-sdk/client-s3`
 
 `ya multer multer-s3`
+
+`ya nodemailer`

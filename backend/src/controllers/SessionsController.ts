@@ -32,7 +32,7 @@ export default {
 
       const { id } = usuario;
 
-      return res.json({
+      return res.status(201).json({
         usuario: {
           id: usuario.id,
           email: usuario.email,

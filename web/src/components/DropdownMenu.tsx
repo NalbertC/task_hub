@@ -4,6 +4,7 @@ import { AiFillCaretDown } from "react-icons/ai";
 import { AuthContext } from "../contexts/auth";
 import { AvatarDemo } from "./Avatar";
 import { Text } from "./Text";
+import { useNavigate } from "react-router-dom";
 
 
 interface DropProps {
@@ -12,7 +13,7 @@ interface DropProps {
 }
 export const DropdownMenu = (props: DropProps) => {
   const { logout } = useContext(AuthContext);
-
+ const navigate = useNavigate();
 
   return (
     <Dropdown.Root>
@@ -30,8 +31,8 @@ export const DropdownMenu = (props: DropProps) => {
 
       <Dropdown.Portal>
         <Dropdown.Content className="bg-background flex flex-col border-blue-400 border-[2px] rounded-[12px] -right-[24px]  absolute min-w-[240px]">
-          <Dropdown.Item className="h-10 pl-4 rounded-[8px] flex flex-row items-center m-[2px] cursor-pointer hover:text-gray-200 hover:delay-150 hover:bg-gray-700 focus:shadow-0 focus:outline-0">
-            <Text>Sua conta</Text>
+          <Dropdown.Item className="h-10 pl-4 rounded-[8px] flex flex-row items-center m-[2px] cursor-pointer hover:text-gray-200 hover:delay-150 hover:bg-gray-700 focus:shadow-0 focus:outline-0" onClick={()=> navigate("/meuperfil")}>
+            <Text>Meu Perfil</Text>
           </Dropdown.Item>
 
           <Dropdown.Item className="h-10 pl-4 rounded-[8px] flex flex-row items-center m-[2px] cursor-pointer hover:text-gray-200 hover:delay-150 hover:bg-gray-700 focus:shadow-0 focus:outline-0">

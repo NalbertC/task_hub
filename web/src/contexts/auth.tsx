@@ -14,6 +14,7 @@ export const AuthProvider = (props: any) => {
   const navigate = useNavigate();
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const [infologin, setInfologin] = useState("");
 
   useEffect(() => {
     const recoveredUser = localStorage.getItem("user");
@@ -49,7 +50,7 @@ export const AuthProvider = (props: any) => {
 
   return (
     <AuthContext.Provider
-      value={{ authenticated: !!user, user, loading, login, logout }}
+      value={{ authenticated: !!user, user, loading, login, logout, infologin }}
     >
       {props.children}
     </AuthContext.Provider>

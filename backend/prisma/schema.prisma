@@ -22,6 +22,9 @@ model Usuario {
   email String
   senha String
 
+  tokenResetSenha    String?
+  dataExpiracaotoken DateTime?
+
   tarefa Tarefa[]
   perfil Perfil?
 

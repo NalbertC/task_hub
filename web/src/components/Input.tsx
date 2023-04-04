@@ -38,7 +38,7 @@ export function Input({
 
       {inputUse === "password" ? (
         <span
-          className="flex justify-center items-center absolute  bottom-0 right-0 h-full pr-4 text-blue-400 cursor-pointer"
+          className="flex justify-center items-center absolute  bottom-0 right-0 h-full pr-4 text-blue-600 cursor-pointer"
           onClick={() => {
             setType("text");
             setViewPass(!viewPass);

@@ -35,7 +35,7 @@ export function InputSearch(props: InputProps) {
 
       setUsuarios(response.data);
     }
-    console.log(usuarios);
+
   }
 
   return (

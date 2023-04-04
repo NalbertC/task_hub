@@ -58,7 +58,6 @@ export function NewTodo() {
         },
       }
     );
-    console.log(dataFim);
 
     setTitle("");
     setDiasSemana([]);
@@ -67,15 +66,19 @@ export function NewTodo() {
   }
 
   function hadleToggleWeekDay(diaSemana: number) {
-    if (diasSemana.includes(diaSemana)) {
-      const diasSemanaComRemocao = diasSemana.filter(
-        (dia) => dia !== diaSemana
-      );
-      setDiasSemana(diasSemanaComRemocao);
+    if (dateIsToday) {
+      setDiasSemana([dayWeekIsToday]);
     } else {
-      const diasSemanaComAdcao = [...diasSemana, diaSemana];
+      if (diasSemana.includes(diaSemana)) {
+        const diasSemanaComRemocao = diasSemana.filter(
+          (dia) => dia !== diaSemana
+        );
+        setDiasSemana(diasSemanaComRemocao);
+      } else {
+        const diasSemanaComAdcao = [...diasSemana, diaSemana];
 
-      setDiasSemana(diasSemanaComAdcao);
+        setDiasSemana(diasSemanaComAdcao);
+      }
     }
   }
 
@@ -131,11 +134,8 @@ export function NewTodo() {
             <ViewCheckbox
               onCheckedChange={() => hadleToggleWeekDay(i)}
               key={dia}
-              checked={
-                dateIsToday ? dayWeekIsToday === i : diasSemana.includes(i)
-              }
+              checked={diasSemana.includes(i)}
               //
-              disabled={dateIsToday}
             >
               {dia}
             </ViewCheckbox>

@@ -8,11 +8,13 @@ import {
 
 import { AuthContext, AuthProvider } from "../contexts/auth";
 
+import { AutoCadastro } from "../pages/AutoCadastro";
 import { Home } from "../pages/Home";
+import { Inicio } from "../pages/Inicio";
 import { Login } from "../pages/Login";
+import { Profile } from "../pages/MyProfile";
 import { NotFound } from "../pages/NotFound";
-import { Privado } from "../pages/Privado";
-import { ViewUser } from "../pages/ViewUser";
+import { SearchProfile } from "../pages/SearchProfile";
 
 type User = {
   id: number;
@@ -42,13 +44,22 @@ export function WebRoutes() {
             path="/"
             element={
               <Private>
-                <Privado />
+                <Home />
               </Private>
             }
           />
-          <Route path="/usuario/:idUsuario" element={<ViewUser />} />
+          <Route
+            path="/meuperfil"
+            element={
+              <Private>
+                <Profile />
+              </Private>
+            }
+          />
+          <Route path="/usuario/:idUsuario" element={<SearchProfile />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/inicio" element={<Home />} />
+          <Route path="/inicio" element={<Inicio />} />
+          <Route path="/cadastro" element={<AutoCadastro />} />
           <Route path="/*" element={<NotFound />} />
         </Routes>
       </AuthProvider>

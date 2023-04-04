@@ -11,7 +11,7 @@ export default {
     try {
       const uploads = await prisma.perfil.findMany();
 
-      return res.json(uploads);
+      return res.status(200).json(uploads);
     } catch (error) {
       console.error(error);
       return res.status(500).json("Erro no servidor interno!");
@@ -91,14 +91,14 @@ export default {
 
         console.log({ req: req.file, avatar });
 
-        return res.status(200).json(avatar);
+        return res.status(201).json(avatar);
       } else {
         atualizarAvatar();
         const avatar = criarAvatar(usuario.id);
 
         console.log({ req: req.file, avatar });
 
-        return res.status(200).json(avatar);
+        return res.status(201).json(avatar);
       }
     } catch (error) {
       console.error(error);
